@@ -162,6 +162,11 @@ angular.module('textAngular.taBind', ['textAngular.factories', 'textAngular.DOM'
 						'<' + attrs.taDefaultWrap.toUpperCase() + '>&nbsp;</' + attrs.taDefaultWrap.toUpperCase() + '>' :
 						'<' + attrs.taDefaultWrap + '>&nbsp;</' + attrs.taDefaultWrap + '>';
 			}
+			
+			if(element.attr('defaultWrap') === 'false') {
+				_defaultTest = '';
+				_defaultVal = '';	
+			}
 
 			/* istanbul ignore else */
 			if(!ngModelOptions.$options) ngModelOptions.$options = {}; // ng-model-options support
@@ -169,6 +174,11 @@ angular.module('textAngular.taBind', ['textAngular.factories', 'textAngular.DOM'
 			var _blankTest = _taBlankTest(_defaultTest);
 
 			var _ensureContentWrapped = function(value) {
+				
+				if(element.attr('defaultWrap') === 'false') {
+					return value;
+				}
+
 				if (_blankTest(value)) return value;
 				var domTest = angular.element("<div>" + value + "</div>");
 				//console.log('domTest.children().length():', domTest.children().length);

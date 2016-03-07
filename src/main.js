@@ -270,10 +270,12 @@ textAngular.directive("textAngular", [
 				// allow for insertion of custom directives on the textarea and div
 				scope.setup.htmlEditorSetup(scope.displayElements.html);
 				scope.setup.textEditorSetup(scope.displayElements.text);
+
 				scope.displayElements.html.attr({
 					'id': 'taHtmlElement' + _serial,
 					'ng-show': 'showHtml',
 					'ta-bind': 'ta-bind',
+					'defaultWrap' : element.attr('default-wrapping'),
 					'ng-model': 'html',
 					'ng-model-options': element.attr('ng-model-options')
 				});
@@ -281,6 +283,7 @@ textAngular.directive("textAngular", [
 					'id': 'taTextElement' + _serial,
 					'contentEditable': 'true',
 					'ta-bind': 'ta-bind',
+					'defaultWrap' : element.attr('default-wrapping'),
 					'ng-model': 'html',
 					'ng-model-options': element.attr('ng-model-options')
 				});
