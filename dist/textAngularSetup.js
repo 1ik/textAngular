@@ -459,7 +459,13 @@ angular.module('textAngularSetup', [])
 	var _retActiveStateFunction = function(q){
 		return function(){ return this.$editor().queryFormatBlockState(q); };
 	};
+	window.previousName = '';
+
 	var headerAction = function(){
+		if(window.previousName === this.name) {
+			return;
+		}
+		window.previousName = this.name;
 		return this.$editor().wrapSelection("formatBlock", "<" + this.name.toUpperCase() +">");
 	};
 	angular.forEach(['h1','h2','h3','h4','h5','h6'], function(h){
@@ -660,8 +666,12 @@ angular.module('textAngularSetup', [])
 		iconclass: 'fa fa-ban',
 		tooltiptext: taTranslations.clear.tooltip,
 		action: function(deferred, restoreSelection){
-
-			var parentDom = document.getElementsByClassName('ta-bind ng-dirty')[0];
+			
+			parentDom = document.getElementsByClassName('ta-bind')[0];
+			if(parentDom === undefined) {
+				console.log(document.getElementsByClassName('ta-bind'));
+				return;
+			}
 			parentDom.innerHTML = parentDom.innerText;
 
 			if(true) {
