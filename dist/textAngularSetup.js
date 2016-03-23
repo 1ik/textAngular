@@ -660,9 +660,14 @@ angular.module('textAngularSetup', [])
 		iconclass: 'fa fa-ban',
 		tooltiptext: taTranslations.clear.tooltip,
 		action: function(deferred, restoreSelection){
-			var i;
-			this.$editor().wrapSelection("removeFormat", null);
-			var possibleNodes = angular.element(taSelection.getSelectionElement());
+
+			var parentDom = document.getElementsByClassName('ta-bind ng-dirty')[0];
+			parentDom.innerHTML = parentDom.innerText;
+
+			if(true) {
+				return;
+			}
+
 			// remove lists
 			var removeListElements = function(list){
 				list = angular.element(list);
