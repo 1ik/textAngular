@@ -203,8 +203,12 @@ angular.module('textAngular.DOM', ['textAngular.factories'])
 							}
 						}
 					}
-					taSelection.setSelectionToElementEnd($target[0]);
+					
+					if( $target[0].innerHTML.indexOf('rangySelectionBoundary') === -1) {
+						taSelection.setSelectionToElementEnd($target[0]);	
+					}
 					return;
+
 				}else if(command.toLowerCase() === 'createlink'){
 					var tagBegin = '<a href="' + options + '" target="' +
 							(defaultTagAttributes.a.target ? defaultTagAttributes.a.target : '') +

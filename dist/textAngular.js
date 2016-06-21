@@ -636,8 +636,12 @@ angular.module('textAngular.DOM', ['textAngular.factories'])
 							}
 						}
 					}
-					taSelection.setSelectionToElementEnd($target[0]);
+					
+					if( $target[0].innerHTML.indexOf('rangySelectionBoundary') === -1) {
+						taSelection.setSelectionToElementEnd($target[0]);	
+					}
 					return;
+
 				}else if(command.toLowerCase() === 'createlink'){
 					var tagBegin = '<a href="' + options + '" target="' +
 							(defaultTagAttributes.a.target ? defaultTagAttributes.a.target : '') +
@@ -1136,6 +1140,11 @@ angular.module('textAngular.taBind', ['textAngular.factories', 'textAngular.DOM'
 						'<' + attrs.taDefaultWrap.toUpperCase() + '>&nbsp;</' + attrs.taDefaultWrap.toUpperCase() + '>' :
 						'<' + attrs.taDefaultWrap + '>&nbsp;</' + attrs.taDefaultWrap + '>';
 			}
+			
+			if(element.attr('defaultWrap') === 'false') {
+				_defaultTest = '';
+				_defaultVal = '';	
+			}
 
 			/* istanbul ignore else */
 			if(!ngModelOptions.$options) ngModelOptions.$options = {}; // ng-model-options support
@@ -1143,6 +1152,11 @@ angular.module('textAngular.taBind', ['textAngular.factories', 'textAngular.DOM'
 			var _blankTest = _taBlankTest(_defaultTest);
 
 			var _ensureContentWrapped = function(value) {
+				
+				if(element.attr('defaultWrap') === 'false') {
+					return value;
+				}
+
 				if (_blankTest(value)) return value;
 				var domTest = angular.element("<div>" + value + "</div>");
 				//console.log('domTest.children().length():', domTest.children().length);
@@ -2309,10 +2323,12 @@ textAngular.directive("textAngular", [
 				// allow for insertion of custom directives on the textarea and div
 				scope.setup.htmlEditorSetup(scope.displayElements.html);
 				scope.setup.textEditorSetup(scope.displayElements.text);
+
 				scope.displayElements.html.attr({
 					'id': 'taHtmlElement' + _serial,
 					'ng-show': 'showHtml',
 					'ta-bind': 'ta-bind',
+					'defaultWrap' : element.attr('default-wrapping'),
 					'ng-model': 'html',
 					'ng-model-options': element.attr('ng-model-options')
 				});
@@ -2320,6 +2336,7 @@ textAngular.directive("textAngular", [
 					'id': 'taTextElement' + _serial,
 					'contentEditable': 'true',
 					'ta-bind': 'ta-bind',
+					'defaultWrap' : element.attr('default-wrapping'),
 					'ng-model': 'html',
 					'ng-model-options': element.attr('ng-model-options')
 				});
